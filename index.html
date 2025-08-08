@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examination Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <i class="fas fa-graduation-cap header-icon"></i>
+                <h1 class="header-title">Examination Management System</h1>
+            </div>
+            <p class="header-subtitle">Manage examiners, calculate remuneration, and generate reports</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn active" data-tab="dashboard">
+                <i class="fas fa-graduation-cap"></i>
+                Dashboard
+            </button>
+            <button class="nav-btn" data-tab="add-examiner">
+                <i class="fas fa-users"></i>
+                Add Examiner
+            </button>
+            <button class="nav-btn" data-tab="calculate">
+                <i class="fas fa-calculator"></i>
+                Calculate Remuneration
+            </button>
+            <button class="nav-btn" data-tab="report">
+                <i class="fas fa-file-text"></i>
+                View Reports
+            </button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Dashboard -->
+            <div id="dashboard" class="tab-content active">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card" onclick="switchTab('add-examiner')">
+                        <div class="card-header">
+                            <div class="card-icon primary">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Add Examiner Details</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>Register new examiners with their academic and contact information</p>
+                            <button class="btn btn-primary">Add Examiner</button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card" onclick="switchTab('calculate')">
+                        <div class="card-header">
+                            <div class="card-icon accent">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h3>Calculate Remuneration</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>Calculate and assign remuneration based on subjects and exam sets</p>
+                            <button class="btn btn-primary">Calculate</button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card" onclick="switchTab('report')">
+                        <div class="card-header">
+                            <div class="card-icon success">
+                                <i class="fas fa-file-text"></i>
+                            </div>
+                            <h3>View Reports</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>Generate comprehensive reports of examiner remuneration</p>
+                            <button class="btn btn-primary">View Reports</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Examiner Form -->
+            <div id="add-examiner" class="tab-content">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2>Add Examiner Details</h2>
+                        <p>Complete examiner registration form</p>
+                    </div>
+                    <form id="examinerForm">
+                        <!-- Academic Information -->
+                        <div class="form-section">
+                            <h3>Academic Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="pattern">Pattern</label>
+                                    <select id="pattern" name="pattern" required>
+                                        <option value="">Select pattern</option>
+                                        <option value="cbcs">CBCS</option>
+                                        <option value="traditional">Traditional</option>
+                                        <option value="semester">Semester</option>
+                                        <option value="annual">Annual</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="class">Class</label>
+                                    <select id="class" name="class" required>
+                                        <option value="">Select class</option>
+                                        <option value="bsc">B.Sc</option>
+                                        <option value="msc">M.Sc</option>
+                                        <option value="ba">B.A</option>
+                                        <option value="ma">M.A</option>
+                                        <option value="bcom">B.Com</option>
+                                        <option value="mcom">M.Com</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="subject">Subject</label>
+                                    <input type="text" id="subject" name="subject" placeholder="Enter subject name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="sem">Semester</label>
+                                    <select id="sem" name="sem" required>
+                                        <option value="">Select semester</option>
+                                        <option value="1">Semester 1</option>
+                                        <option value="2">Semester 2</option>
+                                        <option value="3">Semester 3</option>
+                                        <option value="4">Semester 4</option>
+                                        <option value="5">Semester 5</option>
+                                        <option value="6">Semester 6</option>
+                                        <option value="7">Semester 7</option>
+                                        <option value="8">Semester 8</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Examiner Information -->
+                        <div class="form-section">
+                            <h3>Examiner Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="panelChairman">Panel Chairman</label>
+                                    <input type="text" id="panelChairman" name="panelChairman" placeholder="Enter panel chairman name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="paperSetter">Paper Setter</label>
+                                    <input type="text" id="paperSetter" name="paperSetter" placeholder="Enter paper setter name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="mailId">Email ID</label>
+                                    <input type="email" id="mailId" name="mailId" placeholder="Enter email address" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="contactNumber">Contact Number</label>
+                                    <input type="tel" id="contactNumber" name="contactNumber" placeholder="Enter contact number" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="bankAccountNo">Bank Account Number</label>
+                                    <input type="text" id="bankAccountNo" name="bankAccountNo" placeholder="Enter bank account number" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ifsc">IFSC Code</label>
+                                    <input type="text" id="ifsc" name="ifsc" placeholder="Enter IFSC code" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-large">Add Examiner</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Calculate Remuneration -->
+            <div id="calculate" class="tab-content">
+                <div class="calculate-container">
+                    <!-- Add Subject Card -->
+                    <div class="card">
+                        <div class="card-header accent-header">
+                            <h2>Add Subject Information</h2>
+                        </div>
+                        <div class="card-content">
+                            <form id="subjectForm">
+                                <div class="form-grid-3">
+                                    <div class="form-group">
+                                        <label for="subjectCode">Subject Code</label>
+                                        <input type="text" id="subjectCode" name="subjectCode" placeholder="e.g., CS101" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="subjectTitle">Subject Title</label>
+                                        <input type="text" id="subjectTitle" name="subjectTitle" placeholder="e.g., Computer Science" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="set">Set</label>
+                                        <select id="set" name="set" required>
+                                            <option value="">Select set</option>
+                                            <option value="A">Set A</option>
+                                            <option value="B">Set B</option>
+                                            <option value="C">Set C</option>
+                                            <option value="D">Set D</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="examDuration">Exam Duration (minutes)</label>
+                                        <input type="number" id="examDuration" name="examDuration" placeholder="e.g., 180" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="baseRemuneration">Base Remuneration (₹)</label>
+                                        <input type="number" id="baseRemuneration" name="baseRemuneration" placeholder="e.g., 1000" required>
+                                    </div>
+                                    
+                                    <div class="form-group form-actions-inline">
+                                        <button type="submit" class="btn btn-primary">Add Subject</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Calculate Remuneration Card -->
+                    <div class="card">
+                        <div class="card-header primary-header">
+                            <h2>Calculate Remuneration</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label for="examinerSelect">Select Examiner</label>
+                                <select id="examinerSelect">
+                                    <option value="">Select an examiner</option>
+                                </select>
+                            </div>
+
+                            <div id="subjectsList" class="subjects-list">
+                                <h3>Available Subjects</h3>
+                                <div id="subjectsContainer"></div>
+                            </div>
+
+                            <div id="calculationsList" class="calculations-list" style="display: none;">
+                                <h3>Recent Calculations</h3>
+                                <div id="calculationsContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports -->
+            <div id="report" class="tab-content">
+                <div class="report-container">
+                    <div class="card">
+                        <div class="card-header success-header">
+                            <h2>Examiner Remuneration Report</h2>
+                            <p>Comprehensive overview of examiner payments and details</p>
+                        </div>
+                        <div class="card-content">
+                            <div id="reportContent">
+                                <div class="no-data">
+                                    <i class="fas fa-file-text"></i>
+                                    <p>No examiner data available. Please add examiners first.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
