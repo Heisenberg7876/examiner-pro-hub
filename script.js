@@ -347,6 +347,189 @@ class ExaminationSystem {
         container.innerHTML = reportHTML;
     }
 
+    exportToCSV() {
+        if (this.examiners.length === 0) {
+            this.showToast('No examiner data available to export', 'error');
+            return;
+        }
+
+        const csvHeaders = [
+            'Panel Chairman',
+            'Paper Setter', 
+            'Pattern',
+            'Class',
+            'Subject',
+            'Semester',
+            'Email ID',
+            'Contact Number',
+            'Bank Account No',
+            'IFSC Code',
+            'Total Remuneration',
+            'Remuneration Details'
+        ];
+
+        let csvContent = csvHeaders.join(',') + '\n';
+
+        this.examiners.forEach(examiner => {
+            const totalRemuneration = (examiner.remunerations || [])
+                .reduce((sum, rem) => sum + rem.totalRemuneration, 0);
+            
+            const remunerationDetails = (examiner.remunerations || [])
+                .map(rem => `${rem.subjectCode} (Set ${rem.set}): ₹${rem.totalRemuneration}`)
+                .join('; ');
+
+            const row = [
+                examiner.panelChairman,
+                examiner.paperSetter,
+                examiner.pattern,
+                examiner.class,
+                examiner.subject,
+                examiner.sem,
+                examiner.mailId,
+                examiner.contactNumber,
+                examiner.bankAccountNo,
+                examiner.ifsc,
+                totalRemuneration,
+                remunerationDetails || 'No calculations yet'
+            ].map(field => `"${field}"`).join(',');
+
+            csvContent += row + '\n';
+        });
+
+        // Calculate total system remuneration
+        const totalSystemRemuneration = this.examiners
+            .reduce((sum, examiner) => {
+                return sum + (examiner.remunerations || [])
+                    .reduce((examinerSum, rem) => examinerSum + rem.totalRemuneration, 0);
+            }, 0);
+
+        csvContent += '\n';
+        csvContent += `"Total System Remuneration","","","","","","","","","","${totalSystemRemuneration}",""\n`;
+
+        // Create and download CSV file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `remuneration_summary_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        this.showToast('CSV file downloaded successfully', 'success');
+    }
+
+    printReport() {
+        if (this.examiners.length === 0) {
+            this.showToast('No examiner data available to print', 'error');
+            return;
+        }
+
+        const printWindow = window.open('', '_blank');
+        const reportContent = document.getElementById('reportContent').innerHTML;
+        
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Remuneration Summary Report</title>
+                <style>
+                    body { 
+                        font-family: Arial, sans-serif; 
+                        margin: 20px; 
+                        color: #333;
+                    }
+                    h1 { 
+                        text-align: center; 
+                        color: #2563eb;
+                        margin-bottom: 30px;
+                    }
+                    .report-table-container {
+                        overflow-x: auto;
+                        border-radius: 8px;
+                        border: 1px solid #e5e7eb;
+                    }
+                    table { 
+                        width: 100%; 
+                        border-collapse: collapse; 
+                        margin: 20px 0;
+                    }
+                    th, td { 
+                        padding: 12px; 
+                        text-align: left; 
+                        border-bottom: 1px solid #e5e7eb; 
+                        font-size: 12px;
+                    }
+                    th { 
+                        background-color: #f3f4f6; 
+                        font-weight: 600; 
+                    }
+                    tr:hover { 
+                        background-color: #f8fafc; 
+                    }
+                    .total-remuneration { 
+                        background-color: #dcfce7; 
+                        color: #166534; 
+                        font-weight: 600; 
+                    }
+                    tfoot tr { 
+                        background-color: #2563eb !important; 
+                        color: white !important; 
+                        font-weight: bold; 
+                    }
+                    tfoot td { 
+                        color: white !important; 
+                    }
+                    .print-header {
+                        text-align: center;
+                        margin-bottom: 30px;
+                        padding-bottom: 20px;
+                        border-bottom: 2px solid #2563eb;
+                    }
+                    .print-date {
+                        text-align: right;
+                        font-size: 12px;
+                        color: #666;
+                        margin-bottom: 20px;
+                    }
+                    @media print {
+                        body { margin: 0; }
+                        .no-print { display: none; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="print-header">
+                    <h1>Examination Management System</h1>
+                    <h2>Remuneration Summary Report</h2>
+                </div>
+                <div class="print-date">
+                    Generated on: ${new Date().toLocaleDateString('en-IN', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })}
+                </div>
+                ${reportContent}
+            </body>
+            </html>
+        `);
+        
+        printWindow.document.close();
+        printWindow.focus();
+        
+        // Wait for content to load before printing
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 250);
+
+        this.showToast('Print dialog opened', 'success');
+    }
+
     showToast(message, type = 'success') {
         const toast = document.getElementById('toast');
         toast.textContent = message;

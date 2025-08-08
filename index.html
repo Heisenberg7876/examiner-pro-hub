@@ -267,10 +267,20 @@
                 <div class="report-container">
                     <div class="card">
                         <div class="card-header success-header">
-                            <h2>Examiner Remuneration Report</h2>
+                            <h2>Remuneration Summary</h2>
                             <p>Comprehensive overview of examiner payments and details</p>
                         </div>
                         <div class="card-content">
+                            <div class="report-actions">
+                                <button class="btn btn-primary" onclick="examinationSystem.exportToCSV()">
+                                    <i class="fas fa-download"></i>
+                                    Export CSV
+                                </button>
+                                <button class="btn btn-secondary" onclick="examinationSystem.printReport()">
+                                    <i class="fas fa-print"></i>
+                                    Print Report
+                                </button>
+                            </div>
                             <div id="reportContent">
                                 <div class="no-data">
                                     <i class="fas fa-file-text"></i>

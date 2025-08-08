@@ -218,6 +218,18 @@ body {
     box-shadow: 0 4px 12px hsla(var(--primary), 0.3);
 }
 
+.btn-secondary {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+    border: 2px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--muted);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px hsla(var(--muted-foreground), 0.2);
+}
+
 .btn-large {
     padding: 1rem 2rem;
     font-size: 1.125rem;
@@ -390,6 +402,25 @@ body {
 }
 
 /* Report Styles */
+.report-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.report-actions .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.report-table-container {
+    overflow-x: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
 .report-table {
     width: 100%;
     border-collapse: collapse;
